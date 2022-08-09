@@ -13,14 +13,22 @@
         <th>#</th>
         <th>Name</th>
         <th>Price</th>
+        <th>Type</th>
       </tr>
     </thead>
     <tbody>
       @foreach ($products as $product)
         <tr>
-          <td>{{ $product["id"] }}</td>
-          <td>{{ $product["name"] }}</td>
-          <td>{{ $product["price"] }}</td>
+          <td>{{ $product->id }}</td>
+          <td>{{ $product->name }}</td>
+          <td>{{ $product->price }}</td>
+          <td>
+            @if ($product->price > 2.5)
+              Expensive
+            @else
+              Cheap
+            @endif
+          </td>
         </tr>
       @endforeach
     </tbody>
