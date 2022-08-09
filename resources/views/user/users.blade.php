@@ -1,26 +1,26 @@
 @extends('app')
 
 @section('title')
-  Products
+  Users
 @endsection
 
-@section('content')   
+@section('content') 
 <div class="container">
-  <h1>Products 2</h1>
+  <h1>Users</h1>
   <table class="table">
     <thead>
       <tr>
         <th>#</th>
         <th>Name</th>
-        <th>Price</th>
+        <th>Email</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($products as $product)
+      @foreach ($users as $user)
         <tr>
-          <td>{{ $product["id"] }}</td>
-          <td>{{ $product["name"] }}</td>
-          <td>{{ $product["price"] }}</td>
+          <td>{{ $user->id }}</td>
+          <td>{{ $user->name }}</td>
+          <td>{{ $user->email }}</td>
         </tr>
       @endforeach
     </tbody>

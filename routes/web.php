@@ -29,3 +29,5 @@ Route::get('hello-world', function () {
 Route::get('products', "ProductController@index");
 
 Route::get('products2', "ProductController@index2");
+
+Route::get('users', "UserController@index");
