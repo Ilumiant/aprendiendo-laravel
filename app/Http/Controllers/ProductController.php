@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
   public function index()
   {
-    $products = [
+    $productsDB = [
       [
         "id" => 1,
         "name" => "Apple",
@@ -37,6 +38,17 @@ class ProductController extends Controller
       ],
     ];
 
+    $products = array_map(function ($product) {
+      $productObject = new \stdClass();
+      $productObject->id = $product["id"];
+      $productObject->name = $product["name"];
+      $productObject->price = $product["price"];
+      return $productObject;
+    }, $productsDB);
+
+    Log::info($productsDB);
+    Log::info($products);
+
     return view('product.products', compact("products"));
   }
 
@@ -44,5 +56,23 @@ class ProductController extends Controller
   {
     $products = Product::all();
     return view('product.products2', compact("products"));
+  }
+
+  public function encontrar()
+  {
+    $product1 = Product::find(2);
+    echo $product1->name . "\n";
+
+    $product2 = Product::where('id', 2)->first();
+    echo $product2->name . "\n";
+
+    $product3 = Product::where('price', 1.5)->first();
+    echo $product3->name . "\n";
+
+    $products4 = Product::where('price', '>', 1.5)->get();
+    print_r($products4->toArray());
+    echo gettype($products4) . "\n";
+    echo gettype($products4) . "\n";
+    echo gettype($products4->toArray()) . "\n";
   }
 }
