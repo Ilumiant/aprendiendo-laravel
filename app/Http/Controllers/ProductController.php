@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
   public function index()
   {
     $productsDB = [
@@ -55,6 +60,7 @@ class ProductController extends Controller
   public function index2()
   {
     $products = Product::all();
+    Log::info(["TIPO" => gettype($products)]);
     return view('product.products2', compact("products"));
   }
 
@@ -74,5 +80,78 @@ class ProductController extends Controller
     echo gettype($products4) . "\n";
     echo gettype($products4) . "\n";
     echo gettype($products4->toArray()) . "\n";
+  }
+
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    return view('product.product_form', compact("products"));
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $request->validate([
+      'name' => 'required',
+      'price' => 'required|numeric',
+    ]);
+
+    Product::create($request->all());
+    
+    return redirect('products2')->with(["product-created" => "El producto ha sido creado exitosamente."]);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    //
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    //
   }
 }
