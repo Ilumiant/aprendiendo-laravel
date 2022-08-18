@@ -89,7 +89,8 @@ class ProductController extends Controller
    */
   public function create()
   {
-    return view('product.product_form', compact("products"));
+    $estado = 'create';
+    return view('product.product_form',compact('estado'));
   }
 
   /**
@@ -108,7 +109,7 @@ class ProductController extends Controller
     Log::alert($request->all());
 
     Product::create($request->all());
-    
+
     return redirect('products2')->with(["product-created" => "El producto ha sido creado exitosamente."]);
   }
 
@@ -136,9 +137,9 @@ class ProductController extends Controller
     } else {
       $product->description = '';
     }
-    
+
     $product->save();
-    
+
     return response()->json(["message" => "El producto ha sido creado exitosamente."], 201);
   }
 
@@ -150,7 +151,8 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    //
+    $products = Product::find($id);
+    return view('product.show', compact('products'));
   }
 
   /**
@@ -161,7 +163,9 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-    //
+    $estado = 'edit';
+    $products = Product::find($id);
+    return view('product.product_form', compact('products','estado'));
   }
 
   /**
@@ -171,9 +175,22 @@ class ProductController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function updaProductte(Request $request, $id)
   {
-    //
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+      ]);
+
+      $producto = Product::findOrFail($id);
+      $producto->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'description'=> $request->description
+      ]);
+
+    return redirect('products2')->with(["product-created" => "El producto ha sido actualizado exitosamente."]);
+
   }
 
   /**
@@ -184,6 +201,8 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $producto = Product::findOrFail($id);
+    $producto->delete();
+    return redirect('products2')->with(["product-created" => "El producto ha sido eliminado."]);
   }
 }

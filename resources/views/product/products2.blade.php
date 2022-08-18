@@ -4,7 +4,7 @@
   Products
 @endsection
 
-@section('content')   
+@section('content')
 <div class="container">
   <h1>Products 2</h1>
   @if(session('product-created'))
@@ -37,6 +37,16 @@
               Cheap
             @endif
           </td>
+          <td>
+            <a class="btn btn-success" href="/products/{{ $product->id }}" role="button">show</a>
+            {{-- <a class="btn btn-danger" href="/products/{{ $product->id }}" role="button">Eliminar</a> --}}
+            <form  action="/products/{{$product->id}}" method="POST" novalidate>
+                @csrf @method("delete")
+                <button type="submit" class="btn btn-danger" title="Eliminar este registro">
+                    eliminar
+                </button>
+            </form>
+        </td>
         </tr>
       @endforeach
     </tbody>
