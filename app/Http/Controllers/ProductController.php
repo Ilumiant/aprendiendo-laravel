@@ -152,6 +152,9 @@ class ProductController extends Controller
   public function show($id)
   {
     $products = Product::find($id);
+    if(!$products ) {
+        return redirect('products2')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+    };
     return view('product.show', compact('products'));
   }
 
@@ -165,6 +168,9 @@ class ProductController extends Controller
   {
     $estado = 'edit';
     $products = Product::find($id);
+    if(!$products ) {
+        return redirect('products2')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+    };
     return view('product.product_form', compact('products','estado'));
   }
 
@@ -180,17 +186,19 @@ class ProductController extends Controller
     $request->validate([
         'name' => 'required',
         'price' => 'required|numeric',
-      ]);
+    ]);
 
-      $producto = Product::findOrFail($id);
-      $producto->update([
-        'name' => $request->name,
-        'price' => $request->price,
-        'description'=> $request->description
-      ]);
+    $producto = Product::find($id);
+    if( !$producto) return redirect('products2')->with(["product-created" => "El producto no se puedo actualizar porque ya no existia."]);
+
+    $producto->name = $request->name;
+    $producto->price = $request->price;
+    $producto->description = $request->description;
+    if($request->description === null) $producto->description = '';
+
+    $producto->update();
 
     return redirect('products2')->with(["product-created" => "El producto ha sido actualizado exitosamente."]);
-
   }
 
   /**
@@ -201,8 +209,12 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    $producto = Product::findOrFail($id);
-    $producto->delete();
-    return redirect('products2')->with(["product-created" => "El producto ha sido eliminado."]);
+    $producto = Product::find($id);
+    if($producto) {
+        $producto->delete();
+        return redirect('products2')->with(["product-created" => "El producto ha sido eliminado."]);
+    } else {
+        return redirect('products2')->with(["product-created" => "Por alguna razon este producto ya no existia antes de eliminarlo"]);
+    }
   }
 }

@@ -39,7 +39,6 @@
           </td>
           <td>
             <a class="btn btn-success" href="/products/{{ $product->id }}" role="button">show</a>
-            {{-- <a class="btn btn-danger" href="/products/{{ $product->id }}" role="button">Eliminar</a> --}}
             <form  action="/products/{{$product->id}}" method="POST" novalidate>
                 @csrf @method("delete")
                 <button type="submit" class="btn btn-danger" title="Eliminar este registro">
