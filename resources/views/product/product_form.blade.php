@@ -16,7 +16,7 @@
         </ul>
       </div>
     @endif
-    <form action="/products/store" method="POST" novalidate>
+    <form id="productForm" action="/products/store" method="POST" novalidate>
       @csrf
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
@@ -26,7 +26,16 @@
         <label for="price" class="form-label">Precio</label>
         <input type="text" class="form-control" id="price" name="price">
       </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+      </div>
       <button type="submit" class="btn btn-primary">Crear producto</button>
+      <button type="button" class="btn btn-primary" id="createProductButton">Crear producto forma 2</button>
     </form>
   </div>
+@endsection
+
+@section('script')
+  <script src="{{ Request::root() }}/js/product_form.js"></script>
 @endsection

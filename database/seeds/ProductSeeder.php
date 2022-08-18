@@ -15,23 +15,28 @@ class ProductSeeder extends Seeder
       $products = [
         [
           "name" => "Apple",
-          "price" => 1.5
+          "price" => 1.5,
+          "description" => "It's a Apple"
         ],
         [
           "name" => "Pear",
-          "price" => 2
+          "price" => 2,
+          "description" => "It's a Pear"
         ],
         [
           "name" => "Eggs",
-          "price" => 4.2
+          "price" => 4.2,
+          "description" => "It's a Eggs"
         ],
         [
           "name" => "Chicken",
-          "price" => 3.3
+          "price" => 3.3,
+          "description" => "It's a Chicken"
         ],
         [
           "name" => "Meat",
-          "price" => 3.1
+          "price" => 3.1,
+          "description" => "It's a Meat"
         ],
       ];
 

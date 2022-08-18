@@ -105,9 +105,41 @@ class ProductController extends Controller
       'price' => 'required|numeric',
     ]);
 
+    Log::alert($request->all());
+
     Product::create($request->all());
     
     return redirect('products2')->with(["product-created" => "El producto ha sido creado exitosamente."]);
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store2(Request $request)
+  {
+    $request->validate([
+      'name' => 'required',
+      'price' => 'required|numeric',
+    ]);
+
+    Log::alert($request->all());
+
+    $product = new Product();
+    $product->name = strtolower($request->input('name'));
+    $product->price = $request->price;
+
+    if ($request->input('description')) {
+      $product->description = $request->description;
+    } else {
+      $product->description = '';
+    }
+    
+    $product->save();
+    
+    return response()->json(["message" => "El producto ha sido creado exitosamente."], 201);
   }
 
   /**
