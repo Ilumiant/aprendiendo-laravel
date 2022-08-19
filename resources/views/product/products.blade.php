@@ -1,38 +1,61 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Products</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Products</h1>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($products as $product)
-            <tr>
-              {{--
-              <td>{{ $product["id"] }}</td>
-              <td>{{ $product["name"] }}</td>
-              <td>{{ $product["price"] }}</td>
-              --}}
-              <td>{{ $product->id }}</td>
-              <td>{{ $product->name }}</td>
-              <td>{{ $product->price }}</td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
+@extends('layouts.app')
+
+@section('title')
+  Product List
+@endsection
+
+@section('content')
+<div class="container">
+  <h1>Product List</h1>
+  @if(session('product-created'))
+    <div class="alert alert-success" role="alert">
+      {{ session('product-created') }}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-  </body>
-</html>
+  @endif
+  <div class="mb-3">
+    <a class="btn btn-primary" href="/products/create" role="button">Crear producto</a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Tipo</th>
+        <th>Creado por</th>
+        <th>Creado en</th>
+        <th>Actualizado en</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($products as $product)
+        <tr>
+          <td>{{ $product->id }}</td>
+          <td>{{ $product->name }}</td>
+          <td>{{ $product->price }}</td>
+          <td>
+            @if ($product->price > 2.5)
+              Caro
+            @else
+              Barato
+            @endif
+          </td>
+          <td>{{ $product->user->name }}</td>
+          <td>{{ $product->createdAt() }}</td>
+          <td>{{ $product->updatedAt() }}</td>
+          <td class="d-flex">
+            <a class="btn btn-success mr-3" href="/products/{{ $product->id }}" role="button">Mostrar</a>
+            <form  action="/products/{{$product->id}}" method="POST" novalidate>
+                @csrf @method("delete")
+                <button type="submit" class="btn btn-danger" title="Eliminar este registro">
+                    Eliminar
+                </button>
+            </form>
+        </td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+@endsection

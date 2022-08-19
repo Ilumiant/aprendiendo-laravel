@@ -9,6 +9,27 @@ class Product extends Model
   protected $fillable = [
     "name",
     "price",
-    "description"
+    "description",
+    "user_id",
   ];
+
+  /**
+   * Get the user that owns the Product
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function user()
+  {
+      return $this->belongsTo(User::class);
+  }
+
+  public function createdAt()
+  {
+    return $this->created_at->format('d/m/Y');
+  }
+
+  public function updatedAt()
+  {
+    return $this->updated_at->format('d/m/Y');
+  }
 }

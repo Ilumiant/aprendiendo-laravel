@@ -4,16 +4,141 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+
+  public function index()
+  {
+    $products = Product::all();
+    
+    Log::info(["TIPO" => $products->first()->getQualifiedCreatedAtColumn()]);
+    return view('product.products', compact("products"));
+  }
+
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    $estado = 'create';
+    return view('product.product_form',compact('estado'));
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $request->validate([
+      'name' => 'required',
+      'price' => 'required|numeric',
+    ]);
+
+    $product = new Product();
+    $product->name = $request->input('name');
+    $product->price = $request->price;
+    $product->user_id = Auth::user()->id;
+
+    if ($request->input('description')) {
+      $product->description = $request->description;
+    } else {
+      $product->description = '';
+    }
+
+    $product->save();
+
+    return redirect('products')->with(["product-created" => "El producto ha sido creado exitosamente."]);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $products = Product::find($id);
+    if(!$products ) {
+        return redirect('products')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+    };
+    return view('product.show', compact('products'));
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $estado = 'edit';
+    $products = Product::find($id);
+    if(!$products ) {
+        return redirect('products')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+    };
+    return view('product.product_form', compact('products','estado'));
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+    ]);
+
+    $producto = Product::find($id);
+    if( !$producto) return redirect('products')->with(["product-created" => "El producto no se puedo actualizar porque ya no existia."]);
+
+    $producto->name = $request->name;
+    $producto->price = $request->price;
+    $producto->description = $request->description ? $request->description : '';
+
+    $producto->update();
+
+    return redirect('products')->with(["product-created" => "El producto ha sido actualizado exitosamente."]);
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $producto = Product::find($id);
+    if($producto) {
+        $producto->delete();
+        return redirect('products')->with(["product-created" => "El producto ha sido eliminado."]);
+    } else {
+        return redirect('products')->with(["product-created" => "Por alguna razon este producto ya no existia antes de eliminarlo"]);
+    }
+  }
+
+  
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  private function indexOld()
   {
     $productsDB = [
       [
@@ -57,69 +182,13 @@ class ProductController extends Controller
     return view('product.products', compact("products"));
   }
 
-  public function index2()
-  {
-    $products = Product::all();
-    Log::info(["TIPO" => gettype($products)]);
-    return view('product.products2', compact("products"));
-  }
-
-  public function encontrar()
-  {
-    $product1 = Product::find(2);
-    echo $product1->name . "\n";
-
-    $product2 = Product::where('id', 2)->first();
-    echo $product2->name . "\n";
-
-    $product3 = Product::where('price', 1.5)->first();
-    echo $product3->name . "\n";
-
-    $products4 = Product::where('price', '>', 1.5)->get();
-    print_r($products4->toArray());
-    echo gettype($products4) . "\n";
-    echo gettype($products4) . "\n";
-    echo gettype($products4->toArray()) . "\n";
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    $estado = 'create';
-    return view('product.product_form',compact('estado'));
-  }
-
   /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
-  {
-    $request->validate([
-      'name' => 'required',
-      'price' => 'required|numeric',
-    ]);
-
-    Log::alert($request->all());
-
-    Product::create($request->all());
-
-    return redirect('products2')->with(["product-created" => "El producto ha sido creado exitosamente."]);
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store2(Request $request)
+  private function storeAjax(Request $request)
   {
     $request->validate([
       'name' => 'required',
@@ -143,77 +212,21 @@ class ProductController extends Controller
     return response()->json(["message" => "El producto ha sido creado exitosamente."], 201);
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
+  private function encontrar()
   {
-    $products = Product::find($id);
-    if(!$products ) {
-        return redirect('products2')->with(["product-created" => "por alguna razon este producto ya no existe"]);
-    };
-    return view('product.show', compact('products'));
-  }
+    $product1 = Product::find(2);
+    echo $product1->name . "\n";
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    $estado = 'edit';
-    $products = Product::find($id);
-    if(!$products ) {
-        return redirect('products2')->with(["product-created" => "por alguna razon este producto ya no existe"]);
-    };
-    return view('product.product_form', compact('products','estado'));
-  }
+    $product2 = Product::where('id', 2)->first();
+    echo $product2->name . "\n";
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function updaProductte(Request $request, $id)
-  {
-    $request->validate([
-        'name' => 'required',
-        'price' => 'required|numeric',
-    ]);
+    $product3 = Product::where('price', 1.5)->first();
+    echo $product3->name . "\n";
 
-    $producto = Product::find($id);
-    if( !$producto) return redirect('products2')->with(["product-created" => "El producto no se puedo actualizar porque ya no existia."]);
-
-    $producto->name = $request->name;
-    $producto->price = $request->price;
-    $producto->description = $request->description ? $request->description : '';
-
-    $producto->update();
-
-    return redirect('products2')->with(["product-created" => "El producto ha sido actualizado exitosamente."]);
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy($id)
-  {
-    $producto = Product::find($id);
-    if($producto) {
-        $producto->delete();
-        return redirect('products2')->with(["product-created" => "El producto ha sido eliminado."]);
-    } else {
-        return redirect('products2')->with(["product-created" => "Por alguna razon este producto ya no existia antes de eliminarlo"]);
-    }
+    $products4 = Product::where('price', '>', 1.5)->get();
+    print_r($products4->toArray());
+    echo gettype($products4) . "\n";
+    echo gettype($products4) . "\n";
+    echo gettype($products4->toArray()) . "\n";
   }
 }

@@ -35,7 +35,18 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                      <li class="nav-item">
+                        <a class="nav-link {{ $_SERVER['REQUEST_URI'] == "/products" ? "active" : "" }}"
+                          href="{{ route('products') }}">
+                          Products
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{ $_SERVER['REQUEST_URI'] == "/users" ? "active" : "" }}"
+                          href="{{ route('users') }}">
+                          Users
+                        </a>
+                      </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

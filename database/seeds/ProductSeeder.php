@@ -16,27 +16,32 @@ class ProductSeeder extends Seeder
         [
           "name" => "Apple",
           "price" => 1.5,
-          "description" => "It's a Apple"
+          "description" => "It's a Apple",
+          "user_id" => 1
         ],
         [
           "name" => "Pear",
           "price" => 2,
-          "description" => "It's a Pear"
+          "description" => "It's a Pear",
+          "user_id" => 1
         ],
         [
           "name" => "Eggs",
           "price" => 4.2,
-          "description" => "It's a Eggs"
+          "description" => "It's a Eggs",
+          "user_id" => 1
         ],
         [
           "name" => "Chicken",
           "price" => 3.3,
-          "description" => "It's a Chicken"
+          "description" => "It's a Chicken",
+          "user_id" => 1
         ],
         [
           "name" => "Meat",
           "price" => 3.1,
-          "description" => "It's a Meat"
+          "description" => "It's a Meat",
+          "user_id" => 1
         ],
       ];
 
