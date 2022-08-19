@@ -40,3 +40,7 @@ Route::put('products/{id}', "ProductController@updaProductte");
 Route::delete('products/{id}', "ProductController@destroy");
 
 Route::get('users', "UserController@index");
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
