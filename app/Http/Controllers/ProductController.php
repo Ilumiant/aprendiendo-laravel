@@ -193,8 +193,7 @@ class ProductController extends Controller
 
     $producto->name = $request->name;
     $producto->price = $request->price;
-    $producto->description = $request->description;
-    if($request->description === null) $producto->description = '';
+    $producto->description = $request->description ? $request->description : '';
 
     $producto->update();
 

@@ -16,14 +16,13 @@
         </ul>
       </div>
     @endif
-
-    @if ($estado === 'create')
-        <form id="productForm" action="/products/store" method="POST" novalidate>
-    @else
-        <form id="productForm" action="/products/{{$products->id}}" method="POST" novalidate>
-            @method("put")
-    @endif
-
+    <form id="productForm"
+      action="{{ $estado === 'create' ? "/products/store" : "/products/" . $products->id }}"
+      method="POST" novalidate
+    >
+      @if ($estado !== 'create')
+        @method("put")
+      @endif
       @csrf
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
@@ -42,10 +41,10 @@
         <textarea class="form-control" id="description" name="description">{{$estado !== 'create' ? $products->description : ''}}</textarea>
       </div>
       @if ($estado === 'create')
-      <button type="submit" class="btn btn-primary">Crear producto</button>
-      <button type="button" class="btn btn-primary" id="createProductButton">Crear producto forma 2</button>
+        <button type="submit" class="btn btn-primary">Crear producto</button>
+        <button type="button" class="btn btn-primary" id="createProductButton">Crear producto forma 2</button>
       @else
-      <button type="submit" class="btn btn-primary">Editar</button>
+        <button type="submit" class="btn btn-primary">Editar</button>
       @endif
     </form>
   </div>
