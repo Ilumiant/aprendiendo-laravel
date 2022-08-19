@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,18 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('products/{id}', "ProductController@destroy");
 
   Route::get('users', "UserController@index")->name('users');
+
+//esta son las rutas de profile
+  Route::get('users/profile', "ProfileController@index");
+
+  Route::get('users/profile/create', "ProfileController@create");
+  Route::post('users/profile/store', "ProfileController@store");
+
+  Route::get('users/profile/{id}/edit', "ProfileController@edit");
+  Route::put('users/profile/{id}', "ProfileController@update");
+
+  Route::delete('users/profile/{id}', "ProfileController@destroy");
+
 
 });
 
