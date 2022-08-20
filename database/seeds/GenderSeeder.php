@@ -1,5 +1,6 @@
 <?php
 
+use App\Gender;
 use Illuminate\Database\Seeder;
 
 class GenderSeeder extends Seeder
@@ -11,6 +12,14 @@ class GenderSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $genders = [
+            ['name'=> 'masculino'], 
+            ['name' => 'femenino'],
+            ['name' =>'otro']
+        ];
+
+        foreach ($genders as $gender) {
+            Gender::create($gender);
+          }
     }
 }

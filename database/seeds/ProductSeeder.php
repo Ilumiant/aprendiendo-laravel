@@ -29,19 +29,19 @@ class ProductSeeder extends Seeder
           "name" => "Eggs",
           "price" => 4.2,
           "description" => "It's a Eggs",
-          "user_id" => 1
+          "user_id" => 2
         ],
         [
           "name" => "Chicken",
           "price" => 3.3,
           "description" => "It's a Chicken",
-          "user_id" => 1
+          "user_id" => 2
         ],
         [
           "name" => "Meat",
           "price" => 3.1,
           "description" => "It's a Meat",
-          "user_id" => 1
+          "user_id" => 3
         ],
       ];
 
