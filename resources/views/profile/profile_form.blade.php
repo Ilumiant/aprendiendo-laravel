@@ -25,37 +25,42 @@
             @endif
 
             <div class="mb-3">
-                <label for="name" class="form-label">Nombres</label>
-                <input type="text" class="form-control" id="name" name="name" required
-                    value="{{$estado === 'edit' ? $profile['name'] : ''}}"
+                <label for="firstname" class="form-label">Nombres</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" required
+                    value="{{$estado === 'edit' ? $profile->firstName: ''}}"
                 >
             </div>
             <div class="mb-3">
                 <label for="lastname" class="form-label">Apellidos</label>
                 <input type="text" class="form-control" id="lastname" name="lastname" required
-                    value="{{$estado === 'edit' ? $profile['lastname'] : ''}}"
+                    value="{{$estado === 'edit' ? $profile->lastName : ''}}"
                 >
             </div>
             <div class="mb-3">
                 <label for="age" class="form-label">Edad</label>
                 <input type="text" class="form-control" id="age" name="age" required
-                    value="{{$estado === 'edit' ? $profile['age'] : ''}}"
+                    value="{{$estado === 'edit' ? $profile->age: ''}}"
                 >
             </div>
 
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if (false) checked @endif>
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='masculino') checked @endif>
                 <label class="form-check-label" for="exampleRadios1">
                   Masculino
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='femenino') checked @endif >
                 <label class="form-check-label" for="exampleRadios1">
                   Femenino
                 </label>
               </div>
-
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='otro') checked @endif >
+                <label class="form-check-label" for="exampleRadios1">
+                  Otro
+                </label>
+              </div>
             @if ($estado === 'create')
             <button type="submit" class="btn btn-primary">Crear producto</button>
           @else

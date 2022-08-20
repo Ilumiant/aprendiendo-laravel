@@ -30,9 +30,9 @@ class ProfileSeeder extends Seeder
             [
                 'user_id'=> 3,
                 'gender_id' => 2,
-                'firstName' => 'Leidys Jhoanna',
+                'firstName' => 'Leidys yojhanna',
                 'lastName' => 'Matos Navarro',
-                'age' => 26
+                'age' => 27
             ], 
         ];
 

@@ -13,6 +13,7 @@
         <th>#</th>
         <th>Name</th>
         <th>Email</th>
+        <th>perfil</th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +22,13 @@
           <td>{{ $user->id }}</td>
           <td>{{ $user->name }}</td>
           <td>{{ $user->email }}</td>
+          <td>
+            @if ($user->profile)
+              <a class="btn btn-success mr-3" href="/users/profile/{{ $user->id }}" role="button">Perfil</a>  
+            @else
+                <p>No tiene perfil aun</p>
+            @endif
+          </td>
         </tr>
       @endforeach
     </tbody>

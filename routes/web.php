@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
   Route::post('users/profile/store', "ProfileController@store");
 
   Route::get('users/profile/{id}/edit', "ProfileController@edit");
+  Route::get('users/profile/{id}', "ProfileController@show");
   Route::put('users/profile/{id}', "ProfileController@update");
 
   Route::delete('users/profile/{id}', "ProfileController@destroy");

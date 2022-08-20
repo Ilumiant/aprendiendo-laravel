@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -13,7 +15,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('profile.profile');
+        $profiles = Profile::all();
+        // Log::info(["TIPO" => $profiles]);
+        
+        return view('profile.profile',compact('profiles'));
     }
 
     /**
@@ -47,7 +52,14 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        return view('profile.profile_show');
+        $profile = Profile::find($id);
+        if(!$profile) {
+            return redirect('users/profile')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+            
+        }
+        // Log::info(["TIPO" => $profile]);
+
+        return view('profile.profile_show',compact('profile'));
     }
 
     /**
@@ -59,14 +71,11 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $estado = 'edit';
-
-        $profile = array(
-            'id' => 1,
-            'name' => 'jose gregorio',
-            'lastname' => 'rosales urdaneta',
-            'age'=> 29,
-            'gender' => 'masculino',
-        );
+        $profile = Profile::find($id);
+        if(!$profile) {
+            return redirect('users/profile')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+        }
+        // Log::info(["TIPO" => $profile]);
 
         return view('profile.profile_form',compact('estado','profile'));
     }
@@ -80,7 +89,10 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $profile = Profile::find($id);
+        if(!$profile) {
+
+        }
     }
 
     /**
