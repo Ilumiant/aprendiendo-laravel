@@ -72,7 +72,10 @@ class ProfileController extends Controller
         $profile = Profile::find($id);
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);
-        }
+        };
+        if($profile->user_id !== Auth::user()->id) {
+            return redirect('users')->with(["error-message" => "Este no es tu perfil"]);
+        };
         // Log::info(["TIPO" => $profile]);
         $genders = Gender::all();
 
