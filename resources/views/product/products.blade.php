@@ -7,11 +7,8 @@
 @section('content')
 <div class="container">
   <h1>Product List</h1>
-  @if(session('product-created'))
-    <div class="alert alert-success" role="alert">
-      {{ session('product-created') }}
-    </div>
-  @endif
+  @include('components.message')
+
   <div class="mb-3">
     <a class="btn btn-primary" href="/products/create" role="button">Crear producto</a>
   </div>

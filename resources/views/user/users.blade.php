@@ -7,6 +7,7 @@
 @section('content') 
 <div class="container">
   <h1>Users</h1>
+  @include('components.message')
   <table class="table">
     <thead>
       <tr>
@@ -24,6 +25,7 @@
           <td>{{ $user->email }}</td>
           <td>
             @if ($user->profile)
+           
               <a class="btn btn-success mr-3" href="/users/profile/{{ $user->id }}" role="button">Perfil</a>  
             @else
                 <p>No tiene perfil aun</p>

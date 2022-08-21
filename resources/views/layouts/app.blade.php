@@ -73,7 +73,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href={{Auth::user()->profile ? "/users/profile/" . Auth::user()->id :"users/profile/create"  }}>
+                                    <a class="dropdown-item" href={{Auth::user()->profile ? Request::root() . "/users/profile/" . Auth::user()->id : Request::root() . "/users/profile/create"  }}>
                                         @if (Auth::user()->profile)
                                             Ver Perfil
                                             

@@ -17,8 +17,8 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('gender_id')->constrained();
-            $table->string('firstName');
-            $table->string('lastName');
+            $table->string('firstname');
+            $table->string('lastname');
             $table->integer('age');
             $table->timestamps();
         });

@@ -2,23 +2,16 @@
 
 
 @section('title')
-    Create Profile
+   Crear perfil
 @endsection
 
 
 @section('content')
-    @if ($errors->any())
-    <div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    </div>
-    @endif
     <div class="container">
-        <h1 class="mb-4"> {{$estado === 'edit' ? 'Formulario para Editar ': 'Formulario para crear'}}</h1>
-        <form action="users/profile/store" method="POST" novalidate>
+        <h1 class="mb-4">Formulario para {{$estado === 'edit' ? 'editar': 'crear'}} perfil</h1>
+        <form id="productForm"
+          action="{{ $estado === 'create' ? Request::root() . "/users/profile/store" : Request::root() . "/users/profile/" . $profile->user_id}}"
+           method="POST" novalidate>
             @csrf
             @if ($estado === 'edit')
                 @method("put")
@@ -27,13 +20,13 @@
             <div class="mb-3">
                 <label for="firstname" class="form-label">Nombres</label>
                 <input type="text" class="form-control" id="firstname" name="firstname" required
-                    value="{{$estado === 'edit' ? $profile->firstName: ''}}"
+                    value="{{$estado === 'edit' ? $profile->firstname: ''}}"
                 >
             </div>
             <div class="mb-3">
                 <label for="lastname" class="form-label">Apellidos</label>
                 <input type="text" class="form-control" id="lastname" name="lastname" required
-                    value="{{$estado === 'edit' ? $profile->lastName : ''}}"
+                    value="{{$estado === 'edit' ? $profile->lastname : ''}}"
                 >
             </div>
             <div class="mb-3">
@@ -42,27 +35,27 @@
                     value="{{$estado === 'edit' ? $profile->age: ''}}"
                 >
             </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='masculino') checked @endif>
-                <label class="form-check-label" for="exampleRadios1">
-                  Masculino
-                </label>
-              </div>
+            
+            @foreach($genders as $gender) 
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='femenino') checked @endif >
-                <label class="form-check-label" for="exampleRadios1">
-                  Femenino
+                <input class="form-check-input" 
+                  type="radio" 
+                  name="gender" 
+                  id="gender-{{ $gender->name }}" 
+                  value="1" 
+                  @if ($estado === 'edit')   
+                    @if ($profile->gender->name === $gender->name) 
+                      checked 
+                    @endif 
+                  @endif
+                >
+                <label class="form-check-label" for="gender">
+                  {{ $gender->name }}
                 </label>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" @if ($profile->gender->name ==='otro') checked @endif >
-                <label class="form-check-label" for="exampleRadios1">
-                  Otro
-                </label>
-              </div>
+            @endforeach
             @if ($estado === 'create')
-            <button type="submit" class="btn btn-primary">Crear producto</button>
+            <button type="submit" class="btn btn-primary">Crear perfil</button>
           @else
             <button type="submit" class="btn btn-success">Editar</button>
           @endif

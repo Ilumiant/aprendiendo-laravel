@@ -55,7 +55,7 @@ class ProductController extends Controller
 
     $product->save();
 
-    return redirect('products')->with(["product-created" => "El producto ha sido creado exitosamente."]);
+    return redirect('products')->with(["success-message" => "El producto ha sido creado exitosamente."]);
   }
 
   /**
@@ -68,7 +68,7 @@ class ProductController extends Controller
   {
     $products = Product::find($id);
     if(!$products ) {
-        return redirect('products')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+        return redirect('products')->with(["error-message" => "por alguna razon este producto ya no existe"]);
     };
     return view('product.show', compact('products'));
   }
@@ -84,7 +84,7 @@ class ProductController extends Controller
     $estado = 'edit';
     $products = Product::find($id);
     if(!$products ) {
-        return redirect('products')->with(["product-created" => "por alguna razon este producto ya no existe"]);
+        return redirect('products')->with(["error-messagee" => "por alguna razon este producto ya no existe"]);
     };
     return view('product.product_form', compact('products','estado'));
   }
@@ -104,7 +104,7 @@ class ProductController extends Controller
     ]);
 
     $producto = Product::find($id);
-    if( !$producto) return redirect('products')->with(["product-created" => "El producto no se puedo actualizar porque ya no existia."]);
+    if( !$producto) return redirect('products')->with(["error-message" => "El producto no se puedo actualizar porque ya no existia."]);
 
     $producto->name = $request->name;
     $producto->price = $request->price;
@@ -112,7 +112,7 @@ class ProductController extends Controller
 
     $producto->update();
 
-    return redirect('products')->with(["product-created" => "El producto ha sido actualizado exitosamente."]);
+    return redirect('products')->with(["success-message" => "El producto ha sido actualizado exitosamente."]);
   }
 
   /**
@@ -126,9 +126,9 @@ class ProductController extends Controller
     $producto = Product::find($id);
     if($producto) {
         $producto->delete();
-        return redirect('products')->with(["product-created" => "El producto ha sido eliminado."]);
+        return redirect('products')->with(["success-message" => "El producto ha sido eliminado."]);
     } else {
-        return redirect('products')->with(["product-created" => "Por alguna razon este producto ya no existia antes de eliminarlo"]);
+        return redirect('products')->with(["error-message" => "Por alguna razon este producto ya no existia antes de eliminarlo"]);
     }
   }
 

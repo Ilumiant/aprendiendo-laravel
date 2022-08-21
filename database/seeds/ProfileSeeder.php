@@ -16,22 +16,22 @@ class ProfileSeeder extends Seeder
             [
                 'user_id'=> 1,
                 'gender_id' => 1,
-                'firstName' => 'Jose gregorio',
-                'lastName' => 'Rosales Urdaneta',
+                'firstname' => 'Jose gregorio',
+                'lastname' => 'Rosales Urdaneta',
                 'age' => 29
             ], 
             [
                 'user_id'=> 2,
                 'gender_id' => 1,
-                'firstName' => 'Antonio Miguel',
-                'lastName' => 'Alvares',
+                'firstname' => 'Antonio Miguel',
+                'lastname' => 'Alvares',
                 'age' => 28
             ], 
             [
                 'user_id'=> 3,
                 'gender_id' => 2,
-                'firstName' => 'Leidys yojhanna',
-                'lastName' => 'Matos Navarro',
+                'firstname' => 'Leidys yojhanna',
+                'lastname' => 'Matos Navarro',
                 'age' => 27
             ], 
         ];
