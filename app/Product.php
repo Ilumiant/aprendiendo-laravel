@@ -11,6 +11,7 @@ class Product extends Model
     "price",
     "description",
     "user_id",
+    'image'
   ];
 
   /**

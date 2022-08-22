@@ -6,6 +6,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -13,57 +14,45 @@ class ProductController extends Controller
   public function index()
   {
     $products = Product::all();
-    
-    Log::info(["TIPO" => $products->first()->getQualifiedCreatedAtColumn()]);
+
+    // Log::info(["TIPO" => $products->first()->getQualifiedCreatedAtColumn()]);
     return view('product.products', compact("products"));
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
   public function create()
   {
     $estado = 'create';
     return view('product.product_form',compact('estado'));
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   public function store(Request $request)
   {
-    $request->validate([
-      'name' => 'required',
-      'price' => 'required|numeric',
+      $request->validate([
+          'name' => 'required',
+          'price' => 'required|numeric',
+          'image' => 'image|max:512',
     ]);
 
     $product = new Product();
     $product->name = $request->input('name');
     $product->price = $request->price;
     $product->user_id = Auth::user()->id;
+    $product->description = '';
 
     if ($request->input('description')) {
       $product->description = $request->description;
-    } else {
-      $product->description = '';
     }
+
+    if($request->file('image')){
+        $url = Storage::disk('public')->put('images/users/product', $request->file('image'));
+        $product->image = $url;
+    };
 
     $product->save();
 
     return redirect('products')->with(["success-message" => "El producto ha sido creado exitosamente."]);
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function show($id)
   {
     $products = Product::find($id);
@@ -73,34 +62,29 @@ class ProductController extends Controller
     return view('product.show', compact('products'));
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function edit($id)
   {
     $estado = 'edit';
     $products = Product::find($id);
-    if(!$products ) {
-        return redirect('products')->with(["error-messagee" => "por alguna razon este producto ya no existe"]);
+
+    if(!$products) {
+        return redirect('products')->with(["error-message" => "por alguna razon este producto ya no existe"]);
     };
+
+    if($products->user_id !== Auth::user()->id ) {
+        return redirect('products')->with(["error-message" => "No eres propietario de este producto"]);
+    };
+
     return view('product.product_form', compact('products','estado'));
+
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function update(Request $request, $id)
   {
     $request->validate([
         'name' => 'required',
         'price' => 'required|numeric',
+        'image' => 'image|max:512',
     ]);
 
     $producto = Product::find($id);
@@ -110,17 +94,21 @@ class ProductController extends Controller
     $producto->price = $request->price;
     $producto->description = $request->description ? $request->description : '';
 
+    if ($request->file('image')) {
+        if ($producto->image != null) {
+          if (file_exists(public_path() . '/' . $producto->image)) {
+            unlink( public_path() . '/' . $producto->image );
+          }
+        }
+        $url = Storage::disk('public')->put('images/users/product', $request->file('image'));
+        $producto->image = $url;
+      };
+
     $producto->update();
 
     return redirect('products')->with(["success-message" => "El producto ha sido actualizado exitosamente."]);
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function destroy($id)
   {
     $producto = Product::find($id);
@@ -132,12 +120,7 @@ class ProductController extends Controller
     }
   }
 
-  
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
+
   private function indexOld()
   {
     $productsDB = [
@@ -176,18 +159,12 @@ class ProductController extends Controller
       return $productObject;
     }, $productsDB);
 
-    Log::info($productsDB);
-    Log::info($products);
+    // Log::info($productsDB);
+    // Log::info($products);
 
     return view('product.products', compact("products"));
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   private function storeAjax(Request $request)
   {
     $request->validate([
@@ -195,7 +172,7 @@ class ProductController extends Controller
       'price' => 'required|numeric',
     ]);
 
-    Log::alert($request->all());
+    // Log::alert($request->all());
 
     $product = new Product();
     $product->name = strtolower($request->input('name'));

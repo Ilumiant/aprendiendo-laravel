@@ -19,6 +19,7 @@
     <form id="productForm"
       action="{{ $estado === 'create' ? "/products/store" : "/products/" . $products->id }}"
       method="POST" novalidate
+      enctype="multipart/form-data"
     >
       @if ($estado !== 'create')
         @method("put")
@@ -40,6 +41,10 @@
         <label for="price" class="form-label">Description</label>
         <textarea class="form-control" id="description" name="description">{{$estado !== 'create' ? $products->description : ''}}</textarea>
       </div>
+      <div class="mb-3">
+        <label for="user-image" class="form-label">Imagen de producto</label>
+        <input type="file" id="user-image" name="image">
+    </div>
       @if ($estado === 'create')
         <button type="submit" class="btn btn-primary">Crear producto</button>
         <button type="button" class="btn btn-primary" id="createProductButton">Crear producto forma 2</button>

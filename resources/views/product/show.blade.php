@@ -5,34 +5,22 @@
 @endsection
 
 @section('content')
-<div class="container">
-    <h1>Products 2</h1>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr>
-            <td>{{ $products->id }}</td>
-            <td>{{ $products->name }}</td>
-            <td>{{ $products->price }}</td>
-            <td>
-              @if ($products->price > 2.5)
-                Expensive
-              @else
-                Cheap
-              @endif
-            </td>
-            <td>
-                <a class="btn btn-success" href="/products/{{ $products->id }}/edit" role="button">edict</a>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-  </div>
+<h1>datos de los productos</h1>
+<div class="container my-4">
+    <div class="card mx-auto" style="width: 350px;">
+        @if ($products->image)
+          <img src="{{ Request::root() }}/{{ $products->image }}" class="card-img-top" alt="Es la imagen de perfil del usuario">
+        @endif
+        <div class="card-body">
+            <p class="card-text">{{ 'Nombres:' . ' ' . $products->name}}</p>
+            <p class="card-text">{{ 'Apellidos:' . ' ' . $products->price }}</p>
+            <p class="card-text">{{ 'Descripcion:' . ' ' . $products->description }}</p>
+
+            @if(Auth::user()->id  === $products->user_id)
+                <a href="{{Request::root() }}/products/{{ $products->id}}/edit" class="btn btn-primary">Editar</a>
+            @endif
+            {{-- <a href="{{Request::root() }}/products/{{ $products->id}}/edit" class="btn btn-primary">Editar</a> --}}
+        </div>
+      </div>
+</div>
 @endsection

@@ -63,7 +63,8 @@ class ProfileController extends Controller
 
     public function show($id)
     {
-    //   $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
+
+        //   $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
       $profile = Profile::find($id);
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);
