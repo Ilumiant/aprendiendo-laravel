@@ -7,6 +7,7 @@ use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -33,10 +34,11 @@ class ProfileController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'age' => 'required|numeric',
-            'gender' => 'required'
+            'gender' => 'required',
+            'image' => 'image|max:512',
         ]);
 
-        $profile = Profile::where('user_id', '=' ,Auth::user()->id);
+        $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
         if($profile ) {
             return redirect('users')->with(["error-message" => "Este perfil ya existe"]);
     
@@ -49,15 +51,20 @@ class ProfileController extends Controller
         $profile->age = $request->age;
         $profile->gender_id = $request->gender;
         $profile->user_id = Auth::user()->id;
+
+        if ($request->file('image')) {
+          $url = Storage::disk('public')->put('images/users/profiles', $request->file('image'));
+          $profile->image = $url;
+        }
         // Log::info(["TIPO" => $profile]);
 
         $profile->save();
         return redirect('users')->with(["success-message" => "Se ha actualizado el perfil"]);
     }
 
-    public function show($id)
+    public function show()
     {
-        $profile = Profile::find($id);
+      $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);     
         }
@@ -66,23 +73,23 @@ class ProfileController extends Controller
         return view('profile.profile_show',compact('profile'));
     }
 
-    public function edit($id)
+    public function edit()
     {
         $estado = 'edit';
-        $profile = Profile::find($id);
+        $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);
         };
-        if($profile->user_id !== Auth::user()->id) {
-            return redirect('users')->with(["error-message" => "Este no es tu perfil"]);
-        };
+        // if($profile->user_id !== Auth::user()->id) {
+        //     return redirect('users')->with(["error-message" => "Este no es tu perfil"]);
+        // };
         // Log::info(["TIPO" => $profile]);
         $genders = Gender::all();
 
         return view('profile.profile_form',compact('estado','profile','genders'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $request->validate([
             'firstname' => 'required',
@@ -91,19 +98,26 @@ class ProfileController extends Controller
             'gender' => 'required'
         ]);
 
-        $profile = Profile::find($id);
-        // Log::info(["TIPO" => $profile]);
+        $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
 
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);
         }
 
-
         $profile->firstname = $request->firstname;
         $profile->lastname = $request->lastname;
         $profile->age = $request->age;
         $profile->gender_id = $request->gender;
-        // Log::info(["TIPO" => $profile]);
+
+        if ($request->file('image')) {
+          if ($profile->image != null) {
+            if (file_exists(public_path() . '/' . $profile->image)) {
+              unlink( public_path() . '/' . $profile->image );
+            }
+          }
+          $url = Storage::disk('public')->put('images/users/profiles', $request->file('image'));
+          $profile->image = $url;
+        }
 
         $profile->update();
         return redirect('users')->with(["success-message" => "Se ha actualizado el perfil"]);

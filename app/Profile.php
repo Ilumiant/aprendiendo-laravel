@@ -10,7 +10,9 @@ class Profile extends Model
         'firstname',
         'lastname',
         'age',
-        'gender',
+        'gender_id',
+        'user_id',
+        'image',
     ];
 
     public function user()

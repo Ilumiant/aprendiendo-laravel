@@ -8,7 +8,7 @@ createProductButton.addEventListener("click", async function(e) {
   for (const [key, value] of formData.entries()) {
     console.log({key, value})
   }
-  const response = await fetch(`${window.location.origin}/products/store2`, {
+  const response = await fetch(`${window.location.origin}/products/store`, {
     method: "POST",
     headers: {
       'Accept': 'application/json',

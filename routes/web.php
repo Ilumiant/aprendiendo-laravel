@@ -46,9 +46,9 @@ Route::middleware(['auth'])->group(function () {
   Route::get('users/profile/create', "ProfileController@create");
   Route::post('users/profile/store', "ProfileController@store");
 
-  Route::get('users/profile/{id}/edit', "ProfileController@edit");
+  Route::get('users/profile/edit', "ProfileController@edit");
   Route::get('users/profile/{id}', "ProfileController@show");
-  Route::put('users/profile/{id}', "ProfileController@update");
+  Route::put('users/profile/update', "ProfileController@update");
 
   Route::delete('users/profile/{id}', "ProfileController@destroy");
 

@@ -20,6 +20,7 @@ class CreateProfilesTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->integer('age');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
