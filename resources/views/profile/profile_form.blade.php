@@ -47,20 +47,20 @@
                     value="{{$estado === 'edit' ? $profile->age: ''}}"
                 >
             </div>
-            
+
             <div class="mb-3">
               <div>Género</div>
-              @foreach($genders as $gender) 
+              @foreach($genders as $gender)
                 <div class="form-check">
-                  <input class="form-check-input" 
-                    type="radio" 
-                    name="gender" 
-                    id="gender-{{ $gender->name }}" 
-                    value="1" 
-                    @if ($estado === 'edit')   
-                      @if ($profile->gender->name === $gender->name) 
-                        checked 
-                      @endif 
+                  <input class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    id="gender-{{ $gender->name }}"
+                    value={{$gender->id}}
+                    @if ($estado === 'edit')
+                      @if ($profile->gender->name === $gender->name)
+                        checked
+                      @endif
                     @endif
                   >
                   <label class="form-check-label" for="gender">

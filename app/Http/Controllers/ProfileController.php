@@ -16,7 +16,7 @@ class ProfileController extends Controller
     {
         $profiles = Profile::all();
         // Log::info(["TIPO" => $profiles]);
-        
+
         return view('profile.profile',compact('profiles'));
     }
 
@@ -41,7 +41,6 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
         if($profile ) {
             return redirect('users')->with(["error-message" => "Este perfil ya existe"]);
-    
         }
         $profile = new Profile();
         // Log::info(["TIPO" => $profile]);
@@ -62,11 +61,12 @@ class ProfileController extends Controller
         return redirect('users')->with(["success-message" => "Se ha actualizado el perfil"]);
     }
 
-    public function show()
+    public function show($id)
     {
-      $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
+    //   $profile = Profile::where('user_id', '=' ,Auth::user()->id)->first();
+      $profile = Profile::find($id);
         if(!$profile) {
-            return redirect('users')->with(["error-message" => "Este perfil no existe"]);     
+            return redirect('users')->with(["error-message" => "Este perfil no existe"]);
         }
         // Log::info(["TIPO" => $profile]);
 
@@ -80,10 +80,7 @@ class ProfileController extends Controller
         if(!$profile) {
             return redirect('users')->with(["error-message" => "Este perfil no existe"]);
         };
-        // if($profile->user_id !== Auth::user()->id) {
-        //     return redirect('users')->with(["error-message" => "Este no es tu perfil"]);
-        // };
-        // Log::info(["TIPO" => $profile]);
+
         $genders = Gender::all();
 
         return view('profile.profile_form',compact('estado','profile','genders'));
