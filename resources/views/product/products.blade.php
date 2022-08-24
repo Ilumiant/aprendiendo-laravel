@@ -41,17 +41,16 @@
           <td>{{ $product->user->name }}</td>
           <td>{{ $product->createdAt() }}</td>
           <td>{{ $product->updatedAt() }}</td>
-          <td class="d-flex">
-            @can('products.show')
-              hola como estas
-            @endcan
+          <td class="d-destroy">
             <a class="btn btn-success mr-3" href="/products/{{ $product->id }}" role="button">Mostrar</a>
-            <form  action="/products/{{$product->id}}" method="POST" novalidate>
-                @csrf @method("delete")
-                <button type="submit" class="btn btn-danger" title="Eliminar este registro">
-                    Eliminar
-                </button>
-            </form>
+            @can('products.destroy')
+                <form  action="/products/{{$product->id}}" method="POST" novalidate>
+                    @csrf @method("delete")
+                    <button type="submit" class="btn btn-danger" title="Eliminar este registro">
+                        Eliminar
+                    </button>
+                </form>
+            @endcan
         </td>
         </tr>
       @endforeach
