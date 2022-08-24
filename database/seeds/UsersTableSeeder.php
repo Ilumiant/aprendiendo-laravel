@@ -17,18 +17,18 @@ class UsersTableSeeder extends Seeder
         "name" => "Jose",
         "email" => "jose@mail.com",
         "password" => Hash::make("123123"),
-      ]);
+      ])->assignRole('admin');
 
       User::create([
         "name" => "Antonio",
         "email" => "antonio@mail.com",
         "password" => Hash::make("123123"),
-      ]);
+      ])->assignRole('manager');
 
       User::create([
         "name" => "Leidys",
         "email" => "leidys@mail.com",
         "password" => Hash::make("123123"),
-      ]);
+      ])->assignRole('developer');
     }
 }

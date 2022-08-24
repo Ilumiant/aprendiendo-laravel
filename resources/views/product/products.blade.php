@@ -42,6 +42,9 @@
           <td>{{ $product->createdAt() }}</td>
           <td>{{ $product->updatedAt() }}</td>
           <td class="d-flex">
+            @can('products.show')
+              hola como estas
+            @endcan
             <a class="btn btn-success mr-3" href="/products/{{ $product->id }}" role="button">Mostrar</a>
             <form  action="/products/{{$product->id}}" method="POST" novalidate>
                 @csrf @method("delete")

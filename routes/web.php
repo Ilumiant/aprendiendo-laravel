@@ -30,29 +30,27 @@ Route::get('hello-world', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-  Route::get('products', "ProductController@index")->name('products');
-  Route::get('products/create', "ProductController@create");
-  Route::post('products/store', "ProductController@store");
-  Route::get('products/{id}', "ProductController@show");
-  Route::get('products/{id}/edit', "ProductController@edit");
-  Route::put('products/{id}', "ProductController@update");
-  Route::delete('products/{id}', "ProductController@destroy");
 
+  //rutas users
   Route::get('users', "UserController@index")->name('users');
 
-//esta son las rutas de profile
-  Route::get('users/profile', "ProfileController@index");
+  //esta son las rutas de profile
+  Route::get('users/profile', "ProfileController@index")->name('profiles');
+  Route::get('users/profile/create', "ProfileController@create")->name('profiles.crete');
+  Route::post('users/profile/store', "ProfileController@store")->name('profiles.store');
+  Route::get('users/profile/edit', "ProfileController@edit")->name('profiles.edit');
+  Route::get('users/profile/{id}', "ProfileController@show")->name('profiles.show');
+  Route::put('users/profile/update', "ProfileController@update")->name('profiles.update');
+  Route::delete('users/profile/{id}', "ProfileController@destroy")->name('profiles.destroy');
 
-  Route::get('users/profile/create', "ProfileController@create");
-  Route::post('users/profile/store', "ProfileController@store");
-
-  Route::get('users/profile/edit', "ProfileController@edit");
-  Route::get('users/profile/{id}', "ProfileController@show");
-  Route::put('users/profile/update', "ProfileController@update");
-
-  Route::delete('users/profile/{id}', "ProfileController@destroy");
-
-
+  // rutas products
+  Route::get('products', "ProductController@index")/*->middleware('can:users.index')*/->name('products');
+  Route::get('products/create', "ProductController@create")->name('products.create');
+  Route::post('products/store', "ProductController@store")->name('products.store');
+  Route::get('products/{id}', "ProductController@show")->name('products.show');
+  Route::get('products/{id}/edit', "ProductController@edit")->name('products.edit');
+  Route::put('products/{id}', "ProductController@update")->name('products.update');
+  Route::delete('products/{id}', "ProductController@destroy")->name('products.destroy');
 });
 
 
