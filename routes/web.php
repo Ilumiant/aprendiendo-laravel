@@ -51,6 +51,15 @@ Route::middleware(['auth'])->group(function () {
   Route::get('products/{id}/edit', "ProductController@edit")->name('products.edit');
   Route::put('products/{id}', "ProductController@update")->name('products.update');
   Route::delete('products/{id}', "ProductController@destroy")->name('products.destroy');
+
+  //rutas books
+  Route::get('books', "BookController@index")->name('books');
+  Route::get('books/create', "BookController@create")->name('books.create');
+  Route::post('books/store', "BookController@store")->name('books.store');
+  Route::get('books/{id}', "BookController@show")->name('books.show');
+  Route::get('books/{id}/edit', "BookController@edit")->name('books.edit');
+  Route::put('books/{id}', "BookController@update")->name('books.update');
+  Route::delete('books/{id}', "BookController@destroy")->name('books.destroy');
 });
 
 

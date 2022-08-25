@@ -47,6 +47,12 @@
                           Users
                         </a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link {{ $_SERVER['REQUEST_URI'] == "/books" ? "active" : "" }}"
+                          href="{{ route('books') }}">
+                          books
+                        </a>
+                      </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -76,11 +82,11 @@
                                     <a class="dropdown-item" href={{Auth::user()->profile ? Request::root() . "/users/profile/" . Auth::user()->id : Request::root() . "/users/profile/create"  }}>
                                         @if (Auth::user()->profile)
                                             Ver Perfil
-                                            
+
                                         @else
                                             Completar Perfil
                                         @endif
-                                         
+
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
