@@ -32,7 +32,7 @@
             <td>@foreach ($book->users as $user )
                 {{$user->name}}. </br>
             @endforeach</td>
-            <td></td>
+            <td>{{ $book->creator->name }}</td>
             <td>
                 <a class="btn btn-success mr-3" href="/books/{{ $book->id }}" role="button">Mostrar</a>
             </td>

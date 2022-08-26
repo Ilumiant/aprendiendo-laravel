@@ -19,8 +19,11 @@ class CreateBooksTable extends Migration
             $table->string('age');
             $table->string("description", 1000);
             $table->string('image')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
         });
     }
 

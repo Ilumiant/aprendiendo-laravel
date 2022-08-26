@@ -40,7 +40,7 @@ class BookController extends Controller
         $book->age = $request->age;
         $book->description = '';
 
-        if($book->description) {
+        if($request->description) {
             $book->description = $request->description;
         }
 
@@ -50,7 +50,8 @@ class BookController extends Controller
         }
 
         $book->save();
-
+        
+        $book->users()->sync(Auth::user()->id);
         return redirect('books')->with(["success-message" => "El libro ha sido creado exitosamente."]);
 
     }
@@ -83,7 +84,7 @@ class BookController extends Controller
         $book->age = $request->age;
         $book->description = '';
 
-        if($book->description) {
+        if($request->description) {
             $book->description = $request->description;
         }
 
@@ -98,6 +99,7 @@ class BookController extends Controller
         }
 
         $book->save();
+        $book->users()->attach(Auth::user()->id);
 
         return redirect('books')->with(["success-message" => "El libro ha sido actualizado exitosamente."]);
 

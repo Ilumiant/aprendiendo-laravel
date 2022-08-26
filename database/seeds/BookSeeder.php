@@ -14,19 +14,24 @@ class BookSeeder extends Seeder
     {
         $books = [
             [
-                'name'=> 'mill anos de soledad',
+                'name'=> 'mil años de soledad',
                 'age' => 1992,
                 'description' => 'Relata la historia del un hombre solitario',
+                'created_by' => 1,
+                'updated_by' => 1,
             ],
             [
                 'name'=> 'El principito',
                 'age' => 1800,
                 'description' => 'Relata la historia del un niño aventurero',
+                'created_by' => 1,
+                'updated_by' => 1,
             ],
         ];
 
         foreach ($books as $book) {
-            Book::create($book);
+            $large = Book::create($book);
+            $large->users()->sync(1);
         }
     }
 }
