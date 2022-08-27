@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookController extends Controller
 {
+
+    public function pdf()
+    {
+        $books = Book::with(['users'])->get();
+        $pdf = Pdf::loadView('pdf.book_pdf', ['books'=>$books]);
+        // return $pdf->download('__books.pdf');
+        return $pdf->stream();
+    }
 
     public function index()
     {

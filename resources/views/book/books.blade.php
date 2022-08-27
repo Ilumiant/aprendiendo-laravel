@@ -11,6 +11,7 @@
 
     <div class="mb-3">
       <a class="btn btn-primary" href="/books/create" role="button">Crear Libro</a>
+      <a class="btn btn-primary" href="/books/pdf" role="button">PDF</a>
     </div>
     <table class="table">
       <thead>

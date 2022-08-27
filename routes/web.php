@@ -30,6 +30,8 @@ Route::get('hello-world', function () {
 
 Route::middleware(['auth'])->group(function () {
 
+  // rutas PDFs 
+  Route::get('books/pdf', "BookController@pdf")->name('books.pdf');
 
   //rutas users
   Route::get('users', "UserController@index")->name('users');
