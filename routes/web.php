@@ -58,9 +58,9 @@ Route::middleware(['auth'])->group(function () {
   Route::get('books', "BookController@index")->name('books');
   Route::get('books/create', "BookController@create")->name('books.create');
   Route::post('books/store', "BookController@store")->name('books.store');
-  Route::get('books/{id}', "BookController@show")->name('books.show');
-  Route::get('books/{id}/edit', "BookController@edit")->name('books.edit');
-  Route::put('books/{id}', "BookController@update")->name('books.update');
+  Route::get('books/{id}', "BookController@show")->name('books.show')->middleware('check-private-book');
+  Route::get('books/{id}/edit', "BookController@edit")->name('books.edit')->middleware('check-private-book');
+  Route::put('books/{id}', "BookController@update")->name('books.update')->middleware('check-private-book');
   Route::delete('books/{id}', "BookController@destroy")->name('books.destroy');
 });
 
