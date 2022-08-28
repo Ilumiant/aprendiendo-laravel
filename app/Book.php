@@ -26,4 +26,9 @@ class Book extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function status()
+    {
+        return $this->belongsTo(BookStatu::class, 'book_statu_id');
+    }
 }

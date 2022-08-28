@@ -32,7 +32,7 @@ class CheckPrivateBook
             return $user->id == Auth::user()->id;
           });
   
-          if (!$permission) return redirect('books')->with(["error-message" => "Usted no tiene permisos para ver este libro"]);
+          if ($permission === false) return redirect('books')->with(["error-message" => "Usted no tiene permisos para ver este libro"]);
         }
 
         return $next($request);
