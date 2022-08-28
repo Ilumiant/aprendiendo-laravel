@@ -14,6 +14,7 @@ class BookSeeder extends Seeder
     {
         $books = [
             [
+                'book_statu_id' => 2,
                 'name'=> 'mil años de soledad',
                 'age' => 1992,
                 'description' => 'Relata la historia del un hombre solitario',
@@ -21,6 +22,7 @@ class BookSeeder extends Seeder
                 'updated_by' => 1,
             ],
             [
+                'book_statu_id' => 2,
                 'name'=> 'El principito',
                 'age' => 1800,
                 'description' => 'Relata la historia del un niño aventurero',

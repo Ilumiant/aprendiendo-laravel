@@ -24,7 +24,13 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = Book::with(['users'])->get();
+        $books = Book::
+        whereHas('users', function ($query) {
+          $query->where('user_id', Auth::user()->id);
+        })
+        ->orWhere('book_statu_id', 2)
+        ->get();
+
         // Log::info($books);
         return view('book.books', compact('books'));
     }
