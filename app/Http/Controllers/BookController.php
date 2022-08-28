@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class BookController extends Controller
 {
@@ -109,6 +110,21 @@ class BookController extends Controller
 
         $book->save();
         $book->users()->attach(Auth::user()->id);
+
+
+        if (Auth::user()->id != $book->created_by) {
+          $user = Auth::user();
+          $data = [
+            "user" => $user,
+            "book" => $book,
+          ];
+          Mail::send('book.emails.notification', $data, function ($message) use($book) {
+            $message
+              ->from('example@example.com')
+              ->to($book->creator->email, $book->creator->name)
+              ->subject("Tu libro $book->name ha sido editado");
+          });
+        }
 
         return redirect('books')->with(["success-message" => "El libro ha sido actualizado exitosamente."]);
 
